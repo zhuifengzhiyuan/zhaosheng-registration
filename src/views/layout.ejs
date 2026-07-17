@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof title !== 'undefined' ? title + ' - ' : '' %>招生登记系统</title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+  <% if (locals.currentUser) { %>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">
+        <i class="bi bi-mortarboard-fill"></i> 招生登记系统
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/"><i class="bi bi-speedometer2"></i> 仪表盘</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/students"><i class="bi bi-people-fill"></i> 学生列表</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/students/add"><i class="bi bi-person-plus-fill"></i> 添加学生</a>
+          </li>
+          <% if (locals.currentUser.role === 'admin') { %>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              <i class="bi bi-gear-fill"></i> 管理
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#userModal"><i class="bi bi-person-gear"></i> 用户管理</a></li>
+            </ul>
+          </li>
+          <% } %>
+        </ul>
+        <div class="d-flex align-items-center">
+          <span class="text-white me-3">
+            <i class="bi bi-person-circle"></i> <%= locals.currentUser.displayName %>
+            <span class="badge bg-light text-primary ms-1"><%= locals.currentUser.role === 'admin' ? '管理员' : '招生人员' %></span>
+          </span>
+          <button class="btn btn-outline-light btn-sm" onclick="logout()">
+            <i class="bi bi-box-arrow-right"></i> 退出
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <% } %>
+
+  <div class="container-fluid py-3">
+    <%- body %>
+  </div>
+
+  <% if (locals.currentUser && locals.currentUser.role === 'admin') { %>
+  <div class="modal fade" id="userModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-people-fill"></i> 用户管理</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addUserForm" class="row g-3 mb-4 p-3 border rounded bg-light">
+            <div class="col-12"><h6><i class="bi bi-person-plus"></i> 添加用户</h6></div>
+            <div class="col-md-4">
+              <label class="form-label">用户名 <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" name="username" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">密码 <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" name="password" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">显示名称 <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" name="display_name" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">角色</label>
+              <select class="form-select" name="role">
+                <option value="staff">招生人员</option>
+                <option value="admin">管理员</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary"><i class="bi bi-plus-lg"></i> 添加</button>
+            </div>
+          </form>
+          <div id="userList">
+            <h6><i class="bi bi-list-ul"></i> 现有用户</h6>
+            <div class="text-center py-3"><div class="spinner-border"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% } %>
+
+  <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>

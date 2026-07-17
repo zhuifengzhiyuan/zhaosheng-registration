@@ -1,0 +1,18 @@
+{
+  "name": "zhaosheng-registration",
+  "version": "1.0.0",
+  "description": "学校招生登记系统",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "seed": "node src/seed.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "ejs": "^3.1.10",
+    "express": "^4.21.0",
+    "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.18.0",
+    "sql.js": "^1.11.0"
+  }
+}

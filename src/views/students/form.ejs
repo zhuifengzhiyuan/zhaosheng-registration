@@ -1,0 +1,173 @@
+<% var isEdit = !!student; %>
+<div class="row mb-3">
+  <div class="col">
+    <h4>
+      <i class="bi <%= isEdit ? 'bi-pencil-square' : 'bi-person-plus-fill' %>"></i>
+      <%= isEdit ? '编辑学生' : '添加学生' %>
+    </h4>
+  </div>
+  <div class="col-auto">
+    <a href="/students" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> 返回列表</a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <% if (locals.error) { %>
+    <div class="alert alert-danger"><%= error %></div>
+    <% } %>
+    <div id="formError" class="alert alert-danger d-none"></div>
+    <div id="formSuccess" class="alert alert-success d-none"></div>
+
+    <form id="studentForm">
+      <h5 class="border-bottom pb-2 mb-3"><i class="bi bi-person-vcard"></i> 基本信息</h5>
+      <div class="row g-3 mb-3">
+        <div class="col-md-3">
+          <label class="form-label">学生姓名 <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" name="student_name" value="<%= isEdit ? student.student_name : '' %>" required>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">性别 <span class="text-danger">*</span></label>
+          <select class="form-select" name="gender" required>
+            <option value="男" <%= isEdit && student.gender === '男' ? 'selected' : '' %>>男</option>
+            <option value="女" <%= isEdit && student.gender === '女' ? 'selected' : '' %>>女</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">民族 <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" name="ethnicity" value="<%= isEdit ? student.ethnicity : '汉族' %>" required>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">录取类型 <span class="text-danger">*</span></label>
+          <div class="mt-2">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="admission_type" value="正式录取" id="atFormal"
+                <%= !isEdit || student.admission_type === '正式录取' ? 'checked' : '' %> required>
+              <label class="form-check-label" for="atFormal">正式录取</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="admission_type" value="自主招生" id="atIndependent"
+                <%= isEdit && student.admission_type === '自主招生' ? 'checked' : '' %>>
+              <label class="form-check-label" for="atIndependent">自主招生</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">中考分数</label>
+          <input type="number" step="0.5" class="form-control" name="zhongkao_score" value="<%= isEdit ? student.zhongkao_score : '' %>">
+        </div>
+      </div>
+
+      <h5 class="border-bottom pb-2 mb-3"><i class="bi bi-geo-alt"></i> 地址信息</h5>
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label class="form-label">户籍地址</label>
+          <input type="text" class="form-control" name="registered_address" value="<%= isEdit ? student.registered_address : '' %>" placeholder="省/市/区/详细地址">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">家庭详细地址</label>
+          <input type="text" class="form-control" name="home_address" value="<%= isEdit ? student.home_address : '' %>" placeholder="省/市/区/详细地址">
+        </div>
+      </div>
+
+      <h5 class="border-bottom pb-2 mb-3"><i class="bi bi-credit-card-2-front"></i> 证件信息</h5>
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label class="form-label">学生身份证号码 <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" name="id_number" value="<%= isEdit ? student.id_number : '' %>" placeholder="18 位身份证号" maxlength="18" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">初中毕业学校</label>
+          <input type="text" class="form-control" name="middle_school" value="<%= isEdit ? student.middle_school : '' %>" placeholder="毕业初中名称">
+        </div>
+      </div>
+
+      <h5 class="border-bottom pb-2 mb-3"><i class="bi bi-people"></i> 家长信息</h5>
+      <div class="row g-3 mb-3">
+        <div class="col-md-3">
+          <label class="form-label">父亲姓名</label>
+          <input type="text" class="form-control" name="father_name" value="<%= isEdit ? student.father_name : '' %>">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">父亲手机</label>
+          <input type="tel" class="form-control" name="father_phone" value="<%= isEdit ? student.father_phone : '' %>" placeholder="11 位手机号" maxlength="11">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">母亲姓名</label>
+          <input type="text" class="form-control" name="mother_name" value="<%= isEdit ? student.mother_name : '' %>">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">母亲手机</label>
+          <input type="tel" class="form-control" name="mother_phone" value="<%= isEdit ? student.mother_phone : '' %>" placeholder="11 位手机号" maxlength="11">
+        </div>
+      </div>
+
+      <h5 class="border-bottom pb-2 mb-3"><i class="bi bi-chat-dots"></i> 备注</h5>
+      <div class="row g-3 mb-4">
+        <div class="col-12">
+          <textarea class="form-control" name="notes" rows="3" placeholder="其他需要记录的信息..."><%= isEdit ? student.notes : '' %></textarea>
+        </div>
+      </div>
+
+      <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary btn-lg">
+          <i class="bi bi-check-lg"></i> <%= isEdit ? '保存修改' : '添加学生' %>
+        </button>
+        <a href="/students" class="btn btn-outline-secondary btn-lg">取消</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  var _student = <%= isEdit ? JSON.stringify(student) : 'null' %>;
+
+  document.getElementById('studentForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> 保存中...';
+
+    const errorEl = document.getElementById('formError');
+    const successEl = document.getElementById('formSuccess');
+    errorEl.classList.add('d-none');
+    successEl.classList.add('d-none');
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      const isEdit = _student !== null;
+      const url = isEdit ? '/api/students/' + _student.id : '/api/students';
+      const method = isEdit ? 'PUT' : 'POST';
+
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const result = await res.json();
+
+      if (result.success) {
+        successEl.textContent = isEdit ? '保存成功！' : '添加成功！';
+        successEl.classList.remove('d-none');
+        if (!isEdit) {
+          form.reset();
+          document.querySelector('input[name="ethnicity"]').value = '汉族';
+        }
+        setTimeout(() => window.location.href = '/students', 1000);
+      } else {
+        errorEl.textContent = result.error;
+        errorEl.classList.remove('d-none');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-check-lg"></i> ' + (isEdit ? '保存修改' : '添加学生');
+      }
+    } catch (err) {
+      errorEl.textContent = '网络错误，请重试';
+      errorEl.classList.remove('d-none');
+      btn.disabled = false;
+      btn.innerHTML = '<i class="bi bi-check-lg"></i> ' + (isEdit ? '保存修改' : '添加学生');
+    }
+  });
+</script>

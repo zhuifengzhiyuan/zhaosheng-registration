@@ -1,0 +1,81 @@
+<div class="row mb-3">
+  <div class="col">
+    <h4><i class="bi bi-person-vcard"></i> 学生详情</h4>
+  </div>
+  <div class="col-auto">
+    <a href="/students" class="btn btn-outline-secondary"><i class="bi bi-list-ul"></i> 返回列表</a>
+    <a href="/students/<%= student.id %>/edit" class="btn btn-primary"><i class="bi bi-pencil"></i> 编辑</a>
+    <button class="btn btn-outline-danger" onclick="deleteStudent(<%= student.id %>, '<%= student.student_name %>')"><i class="bi bi-trash"></i> 删除</button>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-md-6">
+    <div class="card h-100">
+      <div class="card-header"><h5 class="mb-0"><i class="bi bi-person-vcard"></i> 基本信息</h5></div>
+      <div class="card-body">
+        <table class="table table-bordered mb-0">
+          <tr><th style="width:35%">学生姓名</th><td><strong><%= student.student_name %></strong></td></tr>
+          <tr><th>性别</th><td><%= student.gender %></td></tr>
+          <tr><th>民族</th><td><%= student.ethnicity %></td></tr>
+          <tr><th>录取类型</th>
+            <td><span class="badge <%= student.admission_type === '正式录取' ? 'bg-success' : 'bg-info' %> fs-6"><%= student.admission_type %></span></td>
+          </tr>
+          <tr><th>中考分数</th><td><%= student.zhongkao_score %> 分</td></tr>
+          <tr><th>录入人</th><td><%= student.creator_name || '未知' %></td></tr>
+          <tr><th>录入时间</th><td><%= new Date(student.created_at).toLocaleString('zh-CN') %></td></tr>
+          <tr><th>最后更新</th><td><%= new Date(student.updated_at).toLocaleString('zh-CN') %></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card h-100">
+      <div class="card-header"><h5 class="mb-0"><i class="bi bi-geo-alt"></i> 地址信息</h5></div>
+      <div class="card-body">
+        <table class="table table-bordered mb-0">
+          <tr><th style="width:35%">户籍地址</th><td><%= student.registered_address || '未填写' %></td></tr>
+          <tr><th>家庭详细地址</th><td><%= student.home_address || '未填写' %></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header"><h5 class="mb-0"><i class="bi bi-credit-card-2-front"></i> 证件与学校</h5></div>
+      <div class="card-body">
+        <table class="table table-bordered mb-0">
+          <tr><th style="width:35%">身份证号码</th><td class="font-monospace"><%= student.id_number %></td></tr>
+          <tr><th>初中毕业学校</th><td><%= student.middle_school || '未填写' %></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header"><h5 class="mb-0"><i class="bi bi-people"></i> 家长信息</h5></div>
+      <div class="card-body">
+        <table class="table table-bordered mb-0">
+          <tr><th style="width:35%">父亲姓名</th><td><%= student.father_name || '未填写' %></td></tr>
+          <tr><th>父亲手机</th><td><%= student.father_phone || '未填写' %></td></tr>
+          <tr><th>母亲姓名</th><td><%= student.mother_name || '未填写' %></td></tr>
+          <tr><th>母亲手机</th><td><%= student.mother_phone || '未填写' %></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <% if (student.notes) { %>
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header"><h5 class="mb-0"><i class="bi bi-chat-dots"></i> 备注</h5></div>
+      <div class="card-body">
+        <pre class="mb-0" style="white-space: pre-wrap;"><%= student.notes %></pre>
+      </div>
+    </div>
+  </div>
+  <% } %>
+</div>

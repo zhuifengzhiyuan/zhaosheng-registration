@@ -1,0 +1,5 @@
+{
+  "projectName": "zhaosheng-registration",
+  "buildCommand": "npm install",
+  "startCommand": "node src/server.js"
+}

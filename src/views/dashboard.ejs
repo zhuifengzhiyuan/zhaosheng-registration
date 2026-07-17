@@ -1,0 +1,85 @@
+<div class="row mb-4">
+  <div class="col">
+    <h4><i class="bi bi-speedometer2"></i> 仪表盘</h4>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-4">
+    <div class="card border-primary border-2">
+      <div class="card-body text-center py-4">
+        <i class="bi bi-people-fill text-primary" style="font-size: 2.5rem;"></i>
+        <h2 class="mt-2 mb-0"><%= stats.total %></h2>
+        <p class="text-muted mb-0">学生总数</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card border-success border-2">
+      <div class="card-body text-center py-4">
+        <i class="bi bi-check-circle-fill text-success" style="font-size: 2.5rem;"></i>
+        <h2 class="mt-2 mb-0"><%= stats.formal %></h2>
+        <p class="text-muted mb-0">正式录取</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card border-info border-2">
+      <div class="card-body text-center py-4">
+        <i class="bi bi-star-fill text-info" style="font-size: 2.5rem;"></i>
+        <h2 class="mt-2 mb-0"><%= stats.independent %></h2>
+        <p class="text-muted mb-0">自主招生</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h5 class="mb-0"><i class="bi bi-clock-history"></i> 最近添加</h5>
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>姓名</th>
+            <th>性别</th>
+            <th>录取类型</th>
+            <th>中考分数</th>
+            <th>初中毕业学校</th>
+            <th>录入人</th>
+            <th>录入时间</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (recentStudents.length === 0) { %>
+          <tr><td colspan="8" class="text-center py-4 text-muted">暂无学生记录</td></tr>
+          <% } else { %>
+          <% recentStudents.forEach(function(s) { %>
+          <tr>
+            <td><strong><%= s.student_name %></strong></td>
+            <td><%= s.gender %></td>
+            <td><span class="badge <%= s.admission_type === '正式录取' ? 'bg-success' : 'bg-info' %>"><%= s.admission_type %></span></td>
+            <td><%= s.zhongkao_score %></td>
+            <td><%= s.middle_school %></td>
+            <td><%= s.creator_name || '未知' %></td>
+            <td><%= new Date(s.created_at).toLocaleString('zh-CN') %></td>
+            <td>
+              <a href="/students/<%= s.id %>" class="btn btn-sm btn-outline-primary" title="查看详情"><i class="bi bi-eye"></i></a>
+              <a href="/students/<%= s.id %>/edit" class="btn btn-sm btn-outline-secondary" title="编辑"><i class="bi bi-pencil"></i></a>
+            </td>
+          </tr>
+          <% }); %>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <% if (recentStudents.length > 0) { %>
+  <div class="card-footer text-end">
+    <a href="/students" class="btn btn-sm btn-primary">查看全部 <i class="bi bi-arrow-right"></i></a>
+  </div>
+  <% } %>
+</div>
